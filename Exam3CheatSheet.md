@@ -15,23 +15,23 @@ A single neuron can draw one line and shade above or below it
 
 Note: used in the __logic__ layer
 
-- `AND(x,y)`
+- `AND(x,y)`  
 
-![AND](andgateneuron.png)
+![AND](andgateneuron.png)\
 
-- `OR(x,y)`
+- `OR(x,y)`  
 
-![OR](orgateneuron.png)
+![OR](orgateneuron.png)\
 
-- `NOT(x, _)`
+- `NOT(x, _)`  
 
-![NOT](notgateneuron.png)
+![NOT](notgateneuron.png)\
 
-\* note, the circle on the line means that the weight is `-1`)
+\* note, the circle on the line means that the weight is `-1`)  
 
-- "`MAJORITY(x1, x2, x3, x4, ...)`" (3 input example)
+- "`MAJORITY(x1, x2, x3, x4, ...)`" (3 input example)  
 
-![MAJORITY](majoritygateneuron.png)
+![MAJORITY](majoritygateneuron.png)\
   - note, doubling the weight of the bottom input (`x3` for instance) makes this gate act like `OR(AND(x1, x2), x3)`
 
 ###Helper Functions
@@ -107,12 +107,12 @@ __Underfitting__ - too simple with regards to the data it's trying to model
 1. Draw the _convex hulls_ for the `+` and `-` training points.  
   - a convex hull is the shape you get when you wrap a rubber band around the points and let it contract  
 
-![Convex Hull Examples](convexhullexamples.png)  
+![Convex Hull Examples](convexhullexamples.png)\
 
 2. Look at the regions where the convex hulls are closest.  
 __3 Cases__:
 
-![Closest Point Examples](convexhullclosestexamples.png)\ 
+![Closest Point Examples](convexhullclosestexamples.png)\
 
 
 
