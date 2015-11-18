@@ -85,7 +85,7 @@ $$
 
 ###Miscellaneous Notes
 
-- You can never classify all points correctly if you have a `+` data point and a `-` data point (contraditory) right on top of each other
+- You can never classify all points correctly if you have a `+` data point and a `-` data point (contradictory) right on top of each other
 
 __Overfitting__ - too strict with regards to the data it's trying to model
 
@@ -114,7 +114,81 @@ __3 Cases__:
 
 ![Closest Point Examples](convexhullclosestexamples.png)\
 
+3. The corresponding boundaries look like this:
+
+![Boundary Examples](boundaryexamples.png)\
 
 
-3. The corresponding boundaries look like this:\
-![Boundary Examples](boundaryexamples.png)  
+###How to find the equation of the boundary line
+
+1. Find the boundary line:
+
+![Example Graph](examplesvmgraph.png)\
+
+
+2. Write equation the for the line:
+
+In the above example:
+$$
+x = 1.5
+$$
+
+
+3. Re-write the line equation to the form:
+ $\vec{w} \cdot \vec{x} + b \Rightarrow \vec{w} \cdot \begin{pmatrix}x\\y\end{pmatrix} + b = 0$
+
+In the above example:
+$$
+x = 1.5 \Rightarrow 0y + 1x - 1.5 = 0\Rightarrow  \underbrace{\begin{pmatrix}  1 & 0\end{pmatrix}}_{\vec{w}} \cdot \underbrace{\begin{pmatrix}x\\y\end{pmatrix}}_{\vec{x}} + \underbrace{(- 1.5)}_{b} = 0
+$$
+
+4. So, our decision boundary needs to follow a few conventions:
+
+  - `positiveness(x)` = output of $\vec{w} \cdot \vec{x} + b$
+
+  - `positiveness` for `+` support vectors: $+1$
+
+  - `positiveness` for `-` support vectors: $-1$
+
+  - `positiveness` for `+` training points: $\geq 1$
+
+  - `positiveness` for `-` training points: $\leq -1$
+
+So we need to scale $\vec{w} \cdot \vec{x} + b$ so that it actually follows these conventions.
+
+We can do this by taking one of the support vectors and scaling the equation so that `positiveness` outputs the correct thing ($+1$ or $-1$ appropriately).
+
+Using the `-` support vector $(2,2)$:
+
+$$
+\begin{pmatrix}  1 & 0\end{pmatrix} \cdot \begin{pmatrix}2\\2\end{pmatrix}+ (- 1.5) \Rightarrow 2 -1.5 = .5
+$$
+
+`postiveness(2,2)` should be $-1$, so we need to multiply the whole equation by $-2$.
+
+$$
+\underbrace{\begin{pmatrix}  -2 & 0\end{pmatrix}}_{\vec{w}} \cdot \underbrace{\begin{pmatrix}x\\y\end{pmatrix}}_{\vec{x}} + \underbrace{( 3)}_{b} = 0
+$$
+
+Note that $\vec{w}$ should be $\bot$ to the decision boundary, and also pointing towards the positive points.
+
+![NormalExample](normalsvmexample.png)\
+
+
+###How to find the $\alpha$ values for the training points
+
+The $\alpha$ of a training point refers to how important it is when determining the boundary line.  
+
+ - $\alpha = 0$ for non-support vectors
+ - $\sum_{\vec{p} \in \text{"+" points}} \alpha_p$ = $\sum_{\vec{p} \in \text{"-" points}} \alpha_p$
+ - solve $\vec{w} = \sum_{\vec{p} \in \text{"+" points}} \alpha_p\vec{p} - \sum_{\vec{p} \in \text{"-" points}} \alpha_p\vec{p}$
+
+ In this case (from the above example):
+
+ - $\alpha_d =0$, since it isn't a support vector
+
+ - $\underbrace{\alpha_a + \alpha_b}_{ \text{"+" points}} = \underbrace{\alpha_c}_{ \text{"-"points}}$
+
+ - $\underbrace{\begin{pmatrix}  -2 \\ 0\end{pmatrix}}_{\vec{w}} = \alpha_a\begin{pmatrix}  1 \\ 3\end{pmatrix} + \alpha_b\begin{pmatrix}  1 \\ 1\end{pmatrix} - \alpha_c\begin{pmatrix}  2 \\ 2\end{pmatrix}$
+
+ - solving these gives you $\alpha_c =2$ and $\alpha_a=\alpha_b=1$
