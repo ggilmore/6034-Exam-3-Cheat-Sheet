@@ -11,7 +11,9 @@
 
 A single neuron can draw one line and shade above or below it
 
-###Primitive Logic Functions Computable by a Single Neuron
+###Primitive Logic Functions
+
+####Computable by a Single Neuron
 
 Note: used in the __logic__ layer
 
@@ -23,34 +25,48 @@ Note: used in the __logic__ layer
 
 ![OR](orgateneuron.png)\
 
-- `NOT(x, _)`  
+- `AND(x, NOT(y))`  
 
 ![NOT](notgateneuron.png)\
 
-\* note, the circle on the line means that the weight is `-1`)  
+\* note, the circle on the line means that the weight is `-1`)
+
+-  `NOT(x)`
+
+![NOT_ACTUAL](actualnotgate.png)\
 
 - "`MAJORITY(x1, x2, x3, x4, ...)`" (3 input example)  
 
 ![MAJORITY](majoritygateneuron.png)\
   - note, doubling the weight of the bottom input (`x3` for instance) makes this gate act like `OR(AND(x1, x2), x3)`
 
+####Need More than One Neuron
+
+- `XOR(x, y)`(3 neurons to compute)
+
+![NOT_ACTUAL](xorgateneuron.png)
+
+The $T$ at the end is $+1.5$
+
 ###Helper Functions
 
-_Stairstep_<sub>_T_</sub>_(x)_ =
+
 $$
+\text{Stairstep}_T(x) =
 \begin{cases}
   1 & \mbox{if } x \geq T \\
   0 & \mbox{if } x < T
 \end{cases}
 $$
 
-_Sigmoid_<sub>_S, M_</sub>_(x)_ =
-
 $$
+\text{Sigmoid}_{S, M}(x) =
 \frac{1}{1 + e^{-S(x -m)}}
 $$
 
-_Performance = Accuracy($out*, out$) =_ $\frac{1}{2}(out* - out)^2$
+$$
+\text{Performance} = \text{Accuracy}(out*, out) = \frac{1}{2}(out* - out)^2
+$$
 
   - \* means __desired__ output
 
@@ -192,3 +208,62 @@ The $\alpha$ of a training point refers to how important it is when determining 
  - $\underbrace{\begin{pmatrix}  -2 \\ 0\end{pmatrix}}_{\vec{w}} = \alpha_a\begin{pmatrix}  1 \\ 3\end{pmatrix} + \alpha_b\begin{pmatrix}  1 \\ 1\end{pmatrix} - \alpha_c\begin{pmatrix}  2 \\ 2\end{pmatrix}$
 
  - solving these gives you $\alpha_c =2$ and $\alpha_a=\alpha_b=1$
+
+Note - the larger the margin width ($\frac{2}{||\vec{w}||}$), the smaller the $\alpha$ values
+###Kernels
+
+Sometimes our training data isn't linearly separable. So, try transforming the data (e.g, polar coords).
+
+__Kernel Trick__ - replace the "$\cdot$" in  $\vec{w} \cdot \vec{x} + b$ with another function.
+  - this function is called a __Kernel function__
+  - this effectively transforms the space
+
+A __Kernel function__ is a similarity measure.
+
+
+
+\begin{align}
+\text{class}(\vec{x}) & = \text{SIGN}[\vec{w} \cdot \vec{x} + b] \\
+ & = \text{SIGN}[(\sum_{i}y_i\alpha_ix_i)\cdot \vec{x} + b] \\
+ & = \text{SIGN}[(\sum_{i}y_i\alpha_i K(\vec{x_i},\vec{x}) + b]
+\end{align}
+
+
+
+So basically we're taking this test point $\vec{x}$ and comparing it with all of our support vectors, and then taking a weighted sum of that.
+
+####Common Kernel Functions
+
+1. Linear Kernel (e.g.) dot product
+
+$$
+K(\vec{u}, \vec{v}) = \vec{u} \cdot \vec{v}
+$$
+
+2. Quadratic Kernel Function
+
+Draws conic sections:
+  - circle
+  - ellipse
+  - hyperbola
+  - parabola
+  - normal line
+
+Ex:
+
+
+$$
+K(\vec{u}, \vec{v}) = (\vec{u} \cdot \vec{v} + 1)^2
+$$
+
+3. Radial (Gaussian) Basis Kernel Function  
+
+Basically draws circles around each points. Has a parameter to adjust "how tight" the circles and grouping is.
+
+__Can perfectly classify any set of training data, as long as you don't have contradictory test data.__
+
+- can sometimes overfit
+
+$$
+e^{\frac{|\vec{u} - \vec{v}|^2}{\sigma}}
+$$
