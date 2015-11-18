@@ -44,7 +44,7 @@ Note: used in the __logic__ layer
 
 - `XOR(x, y)`(3 neurons to compute)
 
-![NOT_ACTUAL](xorgateneuron.png)
+![NOT_ACTUAL](xorgateneuron.png)\ 
 
 The $T$ at the end is $+1.5$
 
